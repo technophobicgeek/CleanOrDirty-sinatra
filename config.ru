@@ -1,3 +1,2 @@
-require 'cleanordirty'
-
+require './cleanordirty'
 run Sinatra::Application

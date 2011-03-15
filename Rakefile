@@ -10,6 +10,7 @@ desc "Load the environment"
 task :environment do
   env = ENV["SINATRA_ENV"] || "development"
   databases = YAML.load_file("config/database.yml")
+  puts databases.inspect
   ActiveRecord::Base.establish_connection(databases[env])
 end
 
