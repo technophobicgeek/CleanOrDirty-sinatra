@@ -32,7 +32,7 @@ post '/api/v1/dishwashers' do
     # TODO Generate and update a code for the dishwasher
     Bitly.use_api_version_3    
     bitly = Bitly.new("plusbzz", "R_18b965b49460efd206c595f066f43370")
-    u = bitly.shorten("http://test.heroku.com/api/v1/dishwashers/#{dishwasher[:id]}")
+    u = bitly.shorten("http://cleanordirty.heroku.com/api/v1/dishwashers/#{dishwasher[:id]}")
     dishwasher.update_attributes({:code => u.user_hash, :status => "dirty"})
     
     if dishwasher
