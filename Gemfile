@@ -1,7 +1,10 @@
 source "http://rubygems.org"
 
 # service
-gem 'activerecord'
+gem 'dm-core'
+gem 'dm-sqlite-adapter'
+gem 'dm-migrations'
+
 gem 'sqlite3'
 gem 'sinatra'
 gem 'bitly'
