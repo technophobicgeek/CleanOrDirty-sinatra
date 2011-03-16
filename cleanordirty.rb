@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'active_record'
+require 'activerecord'
 require 'sinatra'
 require 'bitly'
 
