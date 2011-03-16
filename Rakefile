@@ -10,7 +10,7 @@ desc "Load the environment"
 task :environment do
   dbconfig = {
       :adapter    => "sqlite3",
-      :database   => "my.db",
+      :database   => "db/development.sqlite3",
       :pool       => 5,
       :timeout    => 5000
     }
