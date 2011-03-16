@@ -8,9 +8,13 @@ require 'sqlite3'
 
 desc "Load the environment"
 task :environment do
-  env = ENV["SINATRA_ENV"] || "development"
-  databases = YAML.load_file("config/database.yml")
-  ActiveRecord::Base.establish_connection(databases[env])
+  dbconfig = {
+      :adapter    => "sqlite3",
+      :database   => ENV['DATABASE_URL'] || "#{Dir.pwd}/db/my.db",
+      :pool       => 5,
+      :timeout    => 5000
+    }
+  ActiveRecord::Base.establish_connection(dbconfig)
 end
 
 namespace :db do
