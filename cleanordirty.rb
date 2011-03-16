@@ -25,7 +25,7 @@ class Dishwasher
   validates_uniqueness_of :code
 end
 
-DataMapper::Logger.new($stdout, :debug)
+#DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/db/project.db")
 DataMapper.auto_upgrade!
 
