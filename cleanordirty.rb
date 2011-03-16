@@ -11,12 +11,12 @@ require "#{File.dirname(__FILE__)}/models/dishwasher"
 
 dbconfig = {
     :adapter    => "sqlite3",
-    :database   => ENV['DATABASE_URL'] || "#{Dir.pwd}/db/my.db",
+    #:database   => ENV['DATABASE_URL'] || "#{Dir.pwd}/db/my.db",
+    :database   => "#{Dir.pwd}/db/my.db",
     :pool       => 5,
     :timeout    => 5000
   }
 ActiveRecord::Base.establish_connection(dbconfig)
-#DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
 # the HTTP entry points to our service
 
