@@ -12,7 +12,7 @@ require "#{File.dirname(__FILE__)}/models/dishwasher"
 dbconfig = {
     :adapter    => "sqlite3",
     #:database   => ENV['DATABASE_URL'] || "#{Dir.pwd}/db/my.db",
-    :database   => "#{Dir.pwd}/db/my.db",
+    :database   => "my.db",
     :pool       => 5,
     :timeout    => 5000
   }
