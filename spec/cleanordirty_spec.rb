@@ -74,7 +74,7 @@ describe "service" do
   end
 
   describe "PUT on /api/v1/dishwashers/:code" do
-    it "should update a dishwasher" do
+    it "should update a dishwasher using PUT" do
       Dishwasher.create(
         :code => "ABCDEF",
         :name => "Apna Dishwasher",
@@ -88,9 +88,25 @@ describe "service" do
       attributes["status"].should == "clean"
     end
   end
-
-  describe "DELETE on /api/v1/dishwashers/:id" do
-    it "should delete a dishwasher" do
+  
+  describe "POST on /api/v1/dishwashers/update/:code" do
+    it "should update a dishwasher using POST" do
+      Dishwasher.create(
+        :code => "ABCDEF",
+        :name => "Apna Dishwasher",
+        :status => "dirty"
+      )
+      post '/api/v1/dishwashers/update/ABCDEF', {
+        :status => "clean"}.to_json
+      last_response.should be_ok
+      get '/api/v1/dishwashers/ABCDEF'
+      attributes = JSON.parse(last_response.body)
+      attributes["status"].should == "clean"
+    end
+  end
+  
+  describe "DELETE on /api/v1/dishwashers/:code" do
+    it "should delete a dishwasher on DELETE" do
       Dishwasher.create(
         :code => "ABCDEF",
         :name => "Apna Dishwasher",
@@ -103,5 +119,19 @@ describe "service" do
     end
   end
 
-
+  describe "POST on /api/v1/dishwashers/delete/:code" do
+    it "should delete a dishwasher on POST" do
+      Dishwasher.create(
+        :code => "ABCDEF",
+        :name => "Apna Dishwasher",
+        :status => "dirty"
+      )
+      post '/api/v1/dishwashers/delete/ABCDEF'
+      last_response.should be_ok
+      get '/api/v1/dishwashers/ABCDEF'
+      last_response.status.should == 404
+    end
+  end
+  
+  
 end
