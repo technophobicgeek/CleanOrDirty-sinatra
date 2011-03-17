@@ -29,7 +29,8 @@ DataMapper.finalize
 
 #DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/db/project.db")
-DataMapper.auto_upgrade!
+
+Dishwasher.auto_migrate! unless Dishwasher.storage_exists?
 
 Bitly.use_api_version_3
 $bitly = Bitly.new("plusbzz", "R_18b965b49460efd206c595f066f43370")
@@ -47,10 +48,10 @@ end
 
 post '/api/v1/dishwashers' do
   begin
-    dishwasher = Dishwasher.new(JSON.parse(request.body.read))
+    dishwasher = Dishwasher.create(JSON.parse(request.body.read))
     
     if dishwasher
-      
+      puts dishwasher.inspect
       # TODO Generate and update a code for the dishwasher
       u = $bitly.shorten("http://cleanordirty.heroku.com/api/v1/dishwashers/#{dishwasher.id}")
 
