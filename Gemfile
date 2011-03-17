@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 # service
+gem 'datamapper'
 gem 'dm-core'
 gem 'dm-sqlite-adapter'
 gem 'dm-migrations'

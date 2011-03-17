@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
+require 'datamapper'
 require 'dm-core'
 require 'dm-migrations'
 require 'dm-validations'
