@@ -4,6 +4,7 @@ source "http://rubygems.org"
 gem 'datamapper'
 gem 'dm-core'
 gem 'dm-sqlite-adapter'
+gem 'dm-postgres-adapter'
 gem 'dm-migrations'
 gem 'dm-validations'
 gem 'dm-serializer'
