@@ -1,0 +1,3 @@
+Sinatra somehow works better with DataMapper than ActiveRecord on Heroku
+
+Heroku requires explicit inclusion of 'dm-postgres-adapter' in Gemfile. Phew!
