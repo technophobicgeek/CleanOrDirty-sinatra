@@ -59,6 +59,7 @@ describe "service" do
 
       # On creating a dishwasher, return a random code
       attributes = JSON.parse(last_response.body)
+      attributes["id"].should_not be_nil
       code = attributes["code"]
 
       # TODO code should be 6 characters long
