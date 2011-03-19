@@ -23,8 +23,8 @@ describe "service" do
   describe "GET on /api/v1/dishwashers/:code" do
     before(:each) do
       Dishwasher.create(
-        :code => "ABCDEF",
-        :name => "Apna Dishwasher",
+        :code   => "ABCDEF",
+        :name   => "Apna Dishwasher",
         :status => "dirty"
       )
     end
@@ -92,16 +92,17 @@ describe "service" do
   describe "POST on /api/v1/dishwashers/update/:code" do
     it "should update a dishwasher using POST" do
       Dishwasher.create(
-        :code => "ABCDEF",
+        :code => "XYZABC",
         :name => "Apna Dishwasher",
         :status => "dirty"
       )
-      post '/api/v1/dishwashers/update/ABCDEF', {
+      post '/api/v1/dishwashers/update/XYZABC', {
         :status => "clean"}.to_json
       last_response.should be_ok
-      get '/api/v1/dishwashers/ABCDEF'
+      get '/api/v1/dishwashers/XYZABC'
       attributes = JSON.parse(last_response.body)
       attributes["status"].should == "clean"
+      attributes["code"].should == "XYZABC"
     end
   end
   

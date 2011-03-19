@@ -21,7 +21,7 @@ class Dishwasher
   property :name,   String
   property :status, String
   property :code,   String
-
+  
   # validations
   validates_uniqueness_of :code
 end
@@ -35,7 +35,13 @@ Dishwasher.auto_migrate! unless Dishwasher.storage_exists?
 
 Bitly.use_api_version_3
 $bitly = Bitly.new("plusbzz", "R_18b965b49460efd206c595f066f43370")
-                  
+
+
+
+before do
+  content_type 'application/json'
+end
+
 # the HTTP entry points to our service
 
 get '/api/v1/dishwashers/:code' do
@@ -49,7 +55,8 @@ end
 
 post '/api/v1/dishwashers' do
   begin
-    dishwasher = Dishwasher.create(JSON.parse(request.body.read))
+    body = JSON.parse(request.body.read)
+    dishwasher = Dishwasher.create(body)
     
     if dishwasher
       # TODO Generate and update a code for the dishwasher
@@ -87,12 +94,19 @@ end
 
 private
 
+  # TODO validate updates
+  #     cannot update code
+  #     status should be clean or dirty
+  #     name should be bounded
+
   def update_dishwasher(code)
-    dishwasher = Dishwasher.first(code)
+    dishwasher = Dishwasher.first(:code => code)
     if dishwasher
       begin
-        dishwasher.update(JSON.parse(request.body.read))
-        # we don't have any validations right now. we'll cover later
+        body = JSON.parse(request.body.read)
+        body.delete("code") # can't update code
+        dishwasher.update(body)
+        # TODO we don't have any validations right now. we'll cover later
         dishwasher.to_json
       rescue => e
         error 400, e.message.to_json
@@ -103,7 +117,7 @@ private
   end
 
   def delete_dishwasher(code)
-    dishwasher = Dishwasher.first(code)
+    dishwasher = Dishwasher.first(:code => code)
     if dishwasher
       dishwasher.destroy
       dishwasher.to_json
