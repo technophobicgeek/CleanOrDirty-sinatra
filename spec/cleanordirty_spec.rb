@@ -3,6 +3,7 @@ gem 'rspec'
 require 'rspec'
 gem 'rack-test'
 require 'rack/test'
+require 'date'
 
 set :environment, :test
 #Test::Unit::TestCase.send :include, Rack::Test::Methods
@@ -25,7 +26,8 @@ describe "service" do
       Dishwasher.create(
         :code   => "ABCDEF",
         :name   => "Apna Dishwasher",
-        :status => "dirty"
+        :status => "dirty",
+        :last_updated => Time.now
       )
     end
 
@@ -41,6 +43,8 @@ describe "service" do
       last_response.should be_ok
       attributes = JSON.parse(last_response.body)
       attributes["status"].should_not be_blank
+      last_updated = attributes["last_updated"]
+      last_updated.should_not be_blank
     end
 
 
@@ -70,6 +74,7 @@ describe "service" do
       attributes["code"].should  == "#{code}"
       attributes["name"].should == "Apna Dishwasher"
       attributes["status"].should   == "dirty"
+      attributes["last_updated"].should_not be_blank
     end
   end
 
@@ -86,6 +91,7 @@ describe "service" do
       get '/api/v1/dishwashers/ABCDEF'
       attributes = JSON.parse(last_response.body)
       attributes["status"].should == "clean"
+      attributes["last_updated"].should_not be_blank
     end
   end
   
