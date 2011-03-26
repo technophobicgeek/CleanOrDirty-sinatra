@@ -29,6 +29,7 @@ end
 
 DataMapper.finalize
 
+# Set up database logs
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/db/project.db")
 
