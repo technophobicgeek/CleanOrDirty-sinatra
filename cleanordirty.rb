@@ -65,7 +65,7 @@ post '/api/v1/dishwashers' do
       u = $bitly.shorten("http://cleanordirty.heroku.com/api/v1/dishwashers/#{dishwasher.id}")
 
       dishwasher.code = u.user_hash
-      dishwasher.status = "dirty"
+      dishwasher.status ||= "dirty"
       dishwasher.last_updated = Time.now.utc.to_i
       dishwasher.save
       dishwasher.to_json
@@ -107,6 +107,8 @@ private
       begin
         body = JSON.parse(request.body.read)
         body.delete("code") # can't update code
+        body.delete("name") unless body["name"]
+        body.delete("status") unless body["status"]
         body["last_updated"] = Time.now.utc.to_i
         dishwasher.update(body)
         # TODO we don't have any validations right now. we'll cover later
