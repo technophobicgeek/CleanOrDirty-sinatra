@@ -111,6 +111,25 @@ describe "service" do
       attributes["code"].should == "XYZABC"
     end
   end
+
+  
+  describe "POST on /api/v1/dishwashers/update/:code" do
+    it "should not update a dishwasher using POST with a nil name" do
+      Dishwasher.create(
+        :code => "XYZABC",
+        :name => "Apna Dishwasher",
+        :status => "dirty"
+      )
+      post '/api/v1/dishwashers/update/XYZABC', {
+        :status => "clean", :name => ""}.to_json
+      last_response.should be_ok
+      get '/api/v1/dishwashers/XYZABC'
+      attributes = JSON.parse(last_response.body)
+      attributes["status"].should == "clean"
+      attributes["code"].should == "XYZABC"
+      attributes["name"].should == "Apna Dishwasher"
+    end
+  end
   
   describe "DELETE on /api/v1/dishwashers/:code" do
     it "should delete a dishwasher on DELETE" do

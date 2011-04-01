@@ -107,8 +107,8 @@ private
       begin
         body = JSON.parse(request.body.read)
         body.delete("code") # can't update code
-        body.delete("name") unless body["name"]
-        body.delete("status") unless body["status"]
+        body.delete("name") if body["name"].blank?
+        body.delete("status") if body["status"].blank?
         body["last_updated"] = Time.now.utc.to_i
         dishwasher.update(body)
         # TODO we don't have any validations right now. we'll cover later
