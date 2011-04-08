@@ -78,50 +78,58 @@ describe "service" do
     end
   end
 
-  describe "PUT on /api/v1/dishwashers/:code" do
-    it "should update a dishwasher using PUT" do
-      Dishwasher.create(
-        :code => "ABCDEF",
-        :name => "Apna Dishwasher",
-        :status => "dirty"
-      )
-      put '/api/v1/dishwashers/ABCDEF', {
-        :status => "clean"}.to_json
-      last_response.should be_ok
-      get '/api/v1/dishwashers/ABCDEF'
-      attributes = JSON.parse(last_response.body)
-      attributes["status"].should == "clean"
-      attributes["last_updated"].should_not be_blank
-    end
-  end
-  
+#   describe "PUT on /api/v1/dishwashers/:code" do
+#     it "should update a dishwasher using PUT" do
+#       Dishwasher.create(
+#         :code => "ABCDEF",
+#         :name => "Apna Dishwasher",
+#         :status => "dirty"
+#       )
+#       put '/api/v1/dishwashers/ABCDEF', {
+#         :status => "clean"}.to_json
+#       last_response.should be_ok
+#       get '/api/v1/dishwashers/ABCDEF'
+#       attributes = JSON.parse(last_response.body)
+#       attributes["status"].should == "clean"
+#       attributes["last_updated"].should_not be_blank
+#     end
+#   end
+#   
   describe "POST on /api/v1/dishwashers/update/:code" do
-    it "should update a dishwasher using POST" do
+    before :each do
       Dishwasher.create(
         :code => "XYZABC",
         :name => "Apna Dishwasher",
-        :status => "dirty"
+        :status => "dirty",
+        :last_updated => 10000
       )
+    end
+    
+    it "should return info from server if client info is outdated" do
       post '/api/v1/dishwashers/update/XYZABC', {
-        :status => "clean"}.to_json
+        :status => "clean",:last_updated => "2000"}.to_json
+      last_response.should be_ok
+      get '/api/v1/dishwashers/XYZABC'
+      attributes = JSON.parse(last_response.body)
+      attributes["status"].should == "dirty"
+      attributes["code"].should == "XYZABC"
+      attributes["last_updated"].should == 10000
+    end
+    
+    it "should not return info from server if client info is newer" do
+      post '/api/v1/dishwashers/update/XYZABC', {
+        :status => "clean",:last_updated => "20000"}.to_json
       last_response.should be_ok
       get '/api/v1/dishwashers/XYZABC'
       attributes = JSON.parse(last_response.body)
       attributes["status"].should == "clean"
       attributes["code"].should == "XYZABC"
+      attributes["name"].should == "Apna Dishwasher"
     end
-  end
-
-  
-  describe "POST on /api/v1/dishwashers/update/:code" do
+    
     it "should not update a dishwasher using POST with a nil name" do
-      Dishwasher.create(
-        :code => "XYZABC",
-        :name => "Apna Dishwasher",
-        :status => "dirty"
-      )
       post '/api/v1/dishwashers/update/XYZABC', {
-        :status => "clean", :name => ""}.to_json
+        :status => "clean", :name => "",:last_updated => "20000"}.to_json
       last_response.should be_ok
       get '/api/v1/dishwashers/XYZABC'
       attributes = JSON.parse(last_response.body)
@@ -130,7 +138,7 @@ describe "service" do
       attributes["name"].should == "Apna Dishwasher"
     end
   end
-  
+
   describe "DELETE on /api/v1/dishwashers/:code" do
     it "should delete a dishwasher on DELETE" do
       Dishwasher.create(
