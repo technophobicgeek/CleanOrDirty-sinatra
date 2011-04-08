@@ -30,7 +30,7 @@ end
 DataMapper.finalize
 
 # Set up database logs
-#DataMapper::Logger.new($stdout, :debug)
+DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/db/project.db")
 
 Dishwasher.auto_migrate! unless Dishwasher.storage_exists?
@@ -65,7 +65,7 @@ post '/api/v1/dishwashers' do
 
       dishwasher.code = u.user_hash
       dishwasher.status ||= "dirty"
-      dishwasher.last_updated = Time.now.utc.to_i
+      dishwasher.last_updated ||= Time.now.utc.to_i
       dishwasher.save
       dishwasher.to_json
     else
