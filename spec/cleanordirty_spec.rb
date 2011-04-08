@@ -78,23 +78,6 @@ describe "service" do
     end
   end
 
-#   describe "PUT on /api/v1/dishwashers/:code" do
-#     it "should update a dishwasher using PUT" do
-#       Dishwasher.create(
-#         :code => "ABCDEF",
-#         :name => "Apna Dishwasher",
-#         :status => "dirty"
-#       )
-#       put '/api/v1/dishwashers/ABCDEF', {
-#         :status => "clean"}.to_json
-#       last_response.should be_ok
-#       get '/api/v1/dishwashers/ABCDEF'
-#       attributes = JSON.parse(last_response.body)
-#       attributes["status"].should == "clean"
-#       attributes["last_updated"].should_not be_blank
-#     end
-#   end
-#   
   describe "POST on /api/v1/dishwashers/update/:code" do
     before :each do
       Dishwasher.create(
