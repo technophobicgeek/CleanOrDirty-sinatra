@@ -61,7 +61,6 @@ post '/api/v1/dishwashers' do
     dishwasher = Dishwasher.create(body)
     
     if dishwasher
-      # TODO Generate and update a code for the dishwasher
       u = $bitly.shorten("http://cleanordirty.heroku.com/api/v1/dishwashers/#{dishwasher.id}")
 
       dishwasher.code = u.user_hash
@@ -78,9 +77,6 @@ post '/api/v1/dishwashers' do
   end
 end
 
-put '/api/v1/dishwashers/:code' do
-  update_dishwasher(params[:code])
-end
 
 post '/api/v1/dishwashers/update/:code' do
   update_dishwasher(params[:code])
