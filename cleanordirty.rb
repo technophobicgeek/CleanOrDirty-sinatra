@@ -102,9 +102,11 @@ private
     if dishwasher
       begin
         body = JSON.parse(request.body.read)
+        puts body
         client_ts = preprocess_update_request(body)
         server_ts = dishwasher.last_updated
-        dishwasher.update(body) if client_ts >= server_ts # client's info is newer
+        dishwasher.update(body) if client_ts > server_ts # client's info is newer
+        puts dishwasher.to_json
         dishwasher.to_json
       rescue => e
         error 400, e.message.to_json
