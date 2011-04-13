@@ -36,7 +36,7 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/db/proje
 Dishwasher.auto_migrate! unless Dishwasher.storage_exists?
 
 Bitly.use_api_version_3
-$bitly = Bitly.new("plusbzz", "R_18b965b49460efd206c595f066f43370")
+$bitly = Bitly.new("plusbzz", "<your api key here>")
 
 
 
